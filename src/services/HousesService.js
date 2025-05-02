@@ -1,7 +1,9 @@
+import { BadRequest } from "@bcwdev/auth0provider/lib/Errors.js"
 import { dbContext } from "../db/DbContext.js"
 
 
 class HousesService {
+
   async getHouses(query) {
     // NOTE second quote in populate methods argument(selector) allows for selecting data from a virtual object to be displayed.
     // NOTE select function allows for similar argument to be made for standard objects.
@@ -33,6 +35,14 @@ class HousesService {
       count: resultCount,
       results: houses
     }
+  }
+
+  async getHousesById(houseId) {
+    const house = await dbContext.House.findById(houseId).populate('creator')
+    if (house == null) {
+      throw new BadRequest(`${houseId} is not a valid house!`)
+    }
+    return house
   }
 
 }
