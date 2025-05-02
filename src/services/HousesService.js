@@ -37,7 +37,7 @@ class HousesService {
     }
   }
 
-  async getHousesById(houseId) {
+  async getHouseById(houseId) {
     const house = await dbContext.House.findById(houseId).populate('creator')
     if (house == null) {
       throw new BadRequest(`${houseId} is not a valid house!`)

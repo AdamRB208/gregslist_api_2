@@ -6,6 +6,7 @@ export class PetsController extends BaseController {
     super('api/pets')
     this.router
       .get('', this.getPets)
+      .get('/:petId', this.getPetById)
 
   }
 
@@ -18,6 +19,21 @@ export class PetsController extends BaseController {
     try {
       const pets = await petsService.getPets()
       response.send(pets)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  /**
+     * @param {import("express").Request} request
+     * @param {import("express").Response} response
+     * @param {import("express").NextFunction} next
+     */
+  async getPetById(request, response, next) {
+    try {
+      const petId = request.params.petId
+      const pet = await petsService.getPetById(petId)
+      response.send(pet)
     } catch (error) {
       next(error)
     }
